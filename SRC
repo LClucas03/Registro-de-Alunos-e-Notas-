@@ -1,0 +1,19 @@
+src/
+│
+├── config/               # Arquivos de configuração
+│   ├── db_config.py       # Configuração de banco de dados para Python
+│
+├── models/               # Modelos que representam tabelas do banco de dados
+│   ├── aluno.py           # Modelo de aluno
+│   ├── curso.py           # Modelo de curso
+│   ├── nota.py            # Modelo de nota
+│
+├── controllers/          # Lógica de controle
+│   ├── aluno_controller.py   # Lógica para alunos
+│   ├── curso_controller.py   # Lógica para cursos
+│   ├── nota_controller.py    # Lógica para notas
+│
+├── utils/                # Utilitários e funções auxiliares
+│   ├── helpers.py        # Funções auxiliares
+│
+└── main.py               # Ponto de entrada principal da aplicação
