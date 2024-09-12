@@ -1,0 +1,57 @@
+# Sistema de Gerenciamento Escolar
+
+Este projeto é um sistema de gerenciamento escolar, incluindo informações sobre alunos, cursos e notas. O sistema permite a inserção, atualização e exclusão de registros, bem como a realização de consultas sobre alunos e suas notas.
+
+## Estrutura do Banco de Dados
+
+O banco de dados `Escola` contém três tabelas principais:
+
+1. **Alunos**
+   - `id_aluno`: Identificador único do aluno.
+   - `nome`: Nome completo do aluno.
+   - `data_nascimento`: Data de nascimento do aluno.
+   - `endereco`: Endereço do aluno.
+
+2. **Cursos**
+   - `id_curso`: Identificador único do curso.
+   - `nome_curso`: Nome do curso.
+   - `descrição`: Descrição do curso.
+
+3. **Notas**
+   - `id_nota`: Identificador único da nota.
+   - `id_aluno`: Identificador do aluno (chave estrangeira).
+   - `id_curso`: Identificador do curso (chave estrangeira).
+   - `nota`: Nota do aluno no curso.
+
+## Configuração
+
+1. **Criação do Banco de Dados:**
+
+   Execute o script SQL para criar o banco de dados e as tabelas:
+   ```sql
+   -- Criação do Banco de Dados
+   CRIAR BANCO DE DADOS Escola;
+   USE Escola;
+
+   -- Criação das Tabelas
+   CRIAR TABELA Alunos (
+       id_aluno INT AUTO_INCREMENT CHAVE PRIMÁRIA,
+       nome VARCHAR(100) NÃO NULO,
+       data_nascimento DATA NÃO NULA,
+       endereco VARCHAR(255) NÃO NULO
+   );
+
+   CRIAR TABELA Cursos (
+       id_curso INT AUTO_INCREMENT CHAVE PRIMÁRIA,
+       nome_curso VARCHAR(100) NÃO NULO,
+       descrição TEXTO
+   );
+
+   CRIAR TABELA Notas (
+       id_nota INT AUTO_INCREMENT CHAVE PRIMÁRIA,
+       id_aluno INT,
+       id_curso INT,
+       nota DECIMAL(5,2) NÃO NULO,
+       CHAVE ESTRANGEIRA (id_aluno) REFERÊNCIAS Alunos(id_aluno) EM DELETE CASCADE,
+       CHAVE ESTRANGEIRA (id_curso) REFERÊNCIAS Cursos(id_curso) ON DELETE CASCADE
+   );
