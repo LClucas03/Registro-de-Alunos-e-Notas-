@@ -1,0 +1,108 @@
+# Registro-de-Alunos-e-Notas-
+
+-- Criação do Banco de Dados
+CRIAR BANCO DE DADOS Escola;
+USE Escola;
+
+-- Criação das Tabelas
+CRIAR TABELA Alunos (
+    id_aluno INT AUTO_INCREMENT CHAVE PRIMÁRIA,
+    nome VARCHAR(100) NÃO NULO,
+    data_nascimento DATA NÃO NULA,
+    endereco VARCHAR(255) NÃO NULO
+);
+
+CRIAR TABELA Cursos (
+    id_curso INT AUTO_INCREMENT CHAVE PRIMÁRIA,
+    nome_curso VARCHAR(100) NÃO NULO,
+    descrição TEXTO
+);
+
+CRIAR TABELA Notas (
+    id_nota INT AUTO_INCREMENT CHAVE PRIMÁRIA,
+    id_aluno INT,
+    id_curso INT,
+    nota DECIMAL(5,2) NÃO NULO,
+    CHAVE ESTRANGEIRA (id_aluno) REFERÊNCIAS Alunos(id_aluno) EM DELETE CASCADE,
+    CHAVE ESTRANGEIRA (id_curso) REFERÊNCIAS Cursos(id_curso) ON DELETE CASCADE
+);
+
+-- Inserção de Dados
+-- Alunos
+INSERT INTO Alunos (nome, data_nascimento, endereco) VALORES
+('João Silva', '2000-05-15', 'Rua A, 123'),
+('Maria Oliveira', '22/08/1999', 'Rua B, 456'),
+('Carlos Santos', '30-12-2001', 'Rua C, 789');
+
+-- Cursos
+INSERT INTO Cursos (nome_curso, descrição) VALUES
+('Matemática', 'Curso de Matemática Básica'),
+('História', 'Curso de História Geral'),
+('Biologia', 'Curso de Biologia Molecular');
+
+-- Notas
+INSERT INTO Notas (id_aluno, id_curso, nota) VALORES
+(1, 1, 8,5),
+(1, 2, 7,0),
+(2, 1, 9,0),
+(2, 3, 6,5),
+(3, 2, 8,0);
+
+-- Consultas
+-- 1. Listar todos os alunos juntamente com as notas que eles obtiveram em cada curso.
+SELECIONAR
+    a.nome AS aluno_nome,
+    c.nome_curso AS curso_nome,
+    n.nota
+DE Notas n
+JOIN Alunos a ON n.id_aluno = a.id_aluno
+JOIN Cursos c ON n.id_curso = c.id_curso;
+
+-- 2. Calcule a média das notas para cada curso.
+SELECIONAR
+    c.nome_curso AS curso_nome,
+    AVG(n.nota) AS media_nota
+DE Notas n
+JOIN Cursos c ON n.id_curso = c.id_curso
+AGRUPAR POR c.nome_curso;
+
+-- 3. Encontre o aluno com nota maior em cada curso.
+COM MaiorNota COMO (
+    SELECIONAR
+        n.id_curso,
+        MAX(n.nota) AS maior_nota
+    DE Notas n
+    GRUPO POR n.id_curso
+)
+SELECIONAR
+    c.nome_curso AS curso_nome,
+    a.nome AS aluno_nome,
+    n.nota AS maior_nota
+DE MaiorNota mn
+JOIN Notas n ON mn.id_curso = n.id_curso AND mn.maior_nota = n.nota
+JOIN Cursos c ON n.id_curso = c.id_curso
+JOIN Alunos a ON n.id_aluno = a.id_aluno;
+
+-- Atualização de Dados
+-- 1. Atualizar uma nota de um aluno em um curso específico.
+ATUALIZAÇÃO Notas
+SET nota = 8.0
+ONDE id_aluno = 1 E id_curso = 2;
+
+-- 2. Modifique o endereço de um aluno para um novo endereço.
+ATUALIZAÇÃO Alunos
+SET endereco = 'Avenida Nova, 321'
+ONDE id_aluno = 1;
+
+-- Exclusão de Dados
+-- 1. Exclua um aluno e todas as suas notas associadas.
+EXCLUIR DE Alunos
+ONDE id_aluno = 1;
+
+-- Não é necessário excluir notas separadamente devido à configuração ON DELETE CASCADE na tabela Notas.
+
+-- 2. Remova um curso e todas as notas associadas a esse curso.
+EXCLUIR DE Cursos
+ONDE id_curso = 3;
+
+-- Não é necessário excluir notas separadamente devido à configuração ON DELETE CASCADE na tabela Notas.
