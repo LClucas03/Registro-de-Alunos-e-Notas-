@@ -1,0 +1,30 @@
+
+### Arquivo `.gitignore`
+
+O arquivo `.gitignore` especifica quais arquivos e diretórios devem ser ignorados pelo Git.
+
+```gitignore
+# Ignorar arquivos e diretórios de IDEs
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Ignorar arquivos de logs
+*.log
+
+# Ignorar arquivos temporários do sistema
+*.tmp
+*.swp
+*.swo
+
+# Ignorar arquivos de configuração local
+config/
+*.env
+
+# Ignorar arquivos de banco de dados locais
+*.sql
+
+# Ignorar arquivos de backup
+*.bak
+*.backup
